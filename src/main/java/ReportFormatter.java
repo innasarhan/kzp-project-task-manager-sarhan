@@ -1,7 +1,19 @@
 import java.util.Locale;
 
+/**
+ * Формує текстовий звіт за результатами обробки задач.
+ */
 public class ReportFormatter {
 
+    /**
+     * Формує звіт із чотирма основними показниками.
+     *
+     * @param validTasks кількість валідних задач
+     * @param totalEstimateHours сумарна оцінка задач у годинах
+     * @param averagePriority середній пріоритет задач
+     * @param completedTasks кількість виконаних задач
+     * @return відформатований текст звіту
+     */
     public String format(int validTasks,
                          double totalEstimateHours,
                          double averagePriority,

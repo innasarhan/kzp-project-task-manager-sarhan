@@ -4,10 +4,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Головний клас програми для обробки задач та формування звіту.
+ */
 public class Main {
 
     private static final String VERSION = "0.1.0";
 
+    /**
+     * Запускає програму та обробляє аргументи командного рядка.
+     *
+     * <p>Без додаткових параметрів використовується файл
+     * data/input.csv. Параметри --input та --output дозволяють
+     * змінити шляхи до вхідного та вихідного файлів.</p>
+     *
+     * @param args аргументи командного рядка
+     * @throws Exception якщо виникла помилка читання або запису файлів
+     */
     public static void main(String[] args) throws Exception {
         if (args.length > 0 && args[0].equals("--help")) {
             printHelp();
