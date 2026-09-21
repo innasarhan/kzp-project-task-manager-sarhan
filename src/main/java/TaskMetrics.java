@@ -11,10 +11,10 @@ public class TaskMetrics {
      * @param tasks список задач
      * @return сумарна оцінка в годинах
      */
-    public double totalEstimateHours(List<Task> tasks) {
+    public double totalEstimateHours(List<ProjectTask> tasks) {
         double total = 0.0;
 
-        for (Task task : tasks) {
+        for (ProjectTask task : tasks) {
             total += task.getEstimateHours();
         }
 
@@ -29,14 +29,14 @@ public class TaskMetrics {
      * @param tasks список задач
      * @return середнє значення пріоритету
      */
-    public double averagePriority(List<Task> tasks) {
+    public double averagePriority(List<ProjectTask> tasks) {
         if (tasks.isEmpty()) {
             return 0.0;
         }
 
         int total = 0;
 
-        for (Task task : tasks) {
+        for (ProjectTask task : tasks) {
             total += task.getPriority();
         }
 
@@ -49,10 +49,10 @@ public class TaskMetrics {
      * @param tasks список задач
      * @return кількість задач зі статусом виконання true
      */
-    public int countCompletedTasks(List<Task> tasks) {
+    public int countCompletedTasks(List<ProjectTask> tasks) {
         int count = 0;
 
-        for (Task task : tasks) {
+        for (ProjectTask task : tasks) {
             if (task.isDone()) {
                 count++;
             }

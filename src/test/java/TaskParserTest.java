@@ -26,7 +26,7 @@ public class TaskParserTest {
 
         TaskParser parser = new TaskParser();
 
-        List<Task> tasks = parser.readTasks(tempFile);
+        List<ProjectTask> tasks = parser.readTasks(tempFile);
 
         assertEquals(2, tasks.size());
 
