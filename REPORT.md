@@ -363,7 +363,23 @@ GitHub Actions з лабораторної роботи №1 збережено.
 - виконання CI на Windows, macOS та Ubuntu;
 - успішність усіх jobs.
 
-Посилання на фінальний CI буде додано після завершення Pull Request.
+Фінальний CI-запуск:
+
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/actions/runs/35650927878
+
+Статус: `Success`.
+
+У запуску успішно завершилися 3 job:
+- `ubuntu-latest`;
+- `windows-latest`;
+- `macos-latest`.
+
+Створено 3 JAR-артефакти:
+- `lab01-jar-ubuntu-latest`;
+- `lab01-jar-windows-latest`;
+- `lab01-jar-macos-latest`.
+
+JAR-артефакти доступні у фінальному CI-запуску.
 
 ---
 
@@ -379,15 +395,17 @@ GitHub Actions з лабораторної роботи №1 збережено.
 | #11 | `[ЛР2] Додати тести для ProjectTask та EstimatePriority` |
 | #12 | `[ЛР2] Оновити README та REPORT` |
 
-Робота виконується в окремій гілці:
+Робота виконувалась в окремій гілці `java/lab02`.
 
-    java/lab02
+Pull Request:
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/pull/13
 
-Запланована назва Pull Request:
+Назва Pull Request:
+`[ЛР2] Рефакторинг доменної моделі задач`
 
-    [ЛР2] Рефакторинг доменної моделі задач
+Pull Request №13 було злито в `main` після успішної перевірки CI.
 
-До Pull Request будуть додані зв'язки з відповідними Issues за допомогою `Closes #N`.
+Під час роботи використовувалися GitHub Issues #8, #9, #10, #11 та #12.
 
 ---
 
@@ -504,13 +522,21 @@ ChatGPT використовувався для консультацій щод�
 
 https://github.com/innasarhan/kzp-project-task-manager-sarhan
 
-**Поточна гілка:**
+**Поточний фінальний стан гілки:**
 
-    java/lab02
+    main
 
 **Поточна локально перевірена версія:**
 
     maven-actions-hello 0.1.0
+
+**Фінальний Git-тег:**
+
+    v1
+
+Посилання на тег:
+
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/tree/v1
 
 **Кількість тестів:**
 
