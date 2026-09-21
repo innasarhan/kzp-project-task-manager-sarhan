@@ -8,10 +8,28 @@ public class TaskMetricsTest {
 
     @Test
     void shouldCalculateMetrics() {
-        List<Task> tasks = List.of(
-                new Task("Розробити API", "Іван", 12.5, 1, true),
-                new Task("Створити дизайн", "Олена", 8.0, 2, false),
-                new Task("Написати тести", "Андрій", 5.5, 3, true)
+        List<ProjectTask> tasks = List.of(
+                new ProjectTask(
+                        "Розробити API",
+                        "Іван",
+                        12.5,
+                        1,
+                        true
+                ),
+                new ProjectTask(
+                        "Створити дизайн",
+                        "Олена",
+                        8.0,
+                        2,
+                        false
+                ),
+                new ProjectTask(
+                        "Написати тести",
+                        "Андрій",
+                        5.5,
+                        3,
+                        true
+                )
         );
 
         TaskMetrics metrics = new TaskMetrics();

@@ -54,7 +54,7 @@ public class Main {
         TaskMetrics metrics = new TaskMetrics();
         ReportFormatter formatter = new ReportFormatter();
 
-        List<Task> tasks = parser.readTasks(inputPath);
+        List<ProjectTask> tasks = parser.readTasks(inputPath);
 
         String report = formatter.format(
                 tasks.size(),
