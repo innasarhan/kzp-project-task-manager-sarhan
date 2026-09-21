@@ -12,7 +12,7 @@
 
 **GitHub-репозиторій:**
 
-https://github.com/innasarhan/kzplab01-sarhan
+https://github.com/innasarhan/kzp-project-task-manager-sarhan
 
 **Робоча гілка:**
 
@@ -331,7 +331,7 @@ Closes #6
 
 Pull Request:
 
-https://github.com/innasarhan/kzplab01-sarhan/pull/7
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/pull/7
 
 Pull Request #7 успішно об'єднано з гілкою `main`.
 
@@ -481,11 +481,11 @@ lab01-jar-macos-latest
 
 Посилання на GitHub Actions:
 
-https://github.com/innasarhan/kzplab01-sarhan/actions
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/actions
 
 Конкретний успішний CI-запуск:
 
-https://github.com/innasarhan/kzplab01-sarhan/actions/runs/35343896979
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/actions/runs/35343896979
 
 У цьому запуску успішно виконано перевірки для Ubuntu, Windows та macOS.
 
@@ -666,18 +666,18 @@ v0.1.0
 
 Посилання на тег:
 
-https://github.com/innasarhan/kzplab01-sarhan/tree/v0.1.0
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/tree/v0.1.0
 
 Pull Request:
 
-https://github.com/innasarhan/kzplab01-sarhan/pull/7
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/pull/7
 
 GitHub Actions:
 
-https://github.com/innasarhan/kzplab01-sarhan/actions
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/actions
 
 Фінальний CI-запуск:
 
-https://github.com/innasarhan/kzplab01-sarhan/actions/runs/35343896979
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/actions/runs/35343896979
 
 Репозиторій підготовлено для подальшого розвитку предметної програми у лабораторній роботі №2.
