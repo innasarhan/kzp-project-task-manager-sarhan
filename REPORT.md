@@ -118,6 +118,7 @@ CSV-розбір і значна частина перевірки значен�
 - `assignee` не повинен бути `null`;
 - `assignee` не повинен бути порожнім або складатися лише з пробілів;
 - `estimateHours` не може бути від'ємним;
+- `estimateHours` має бути скінченним числом; значення `NaN` та `±Infinity` заборонені;
 - `priority` не може бути від'ємним.
 
 Для перевірки `null` використовується:
@@ -223,7 +224,7 @@ Setter-методи не використовуються, оскільки ст
 
 Загальна кількість автоматичних тестів:
 
-    21
+    22
 
 ### 6.1. TaskParserTest
 
@@ -257,6 +258,7 @@ Setter-методи не використовуються, оскільки ст
 - `null` для `assignee`;
 - порожній `assignee`;
 - від'ємний `estimateHours`;
+- `NaN` та `±Infinity` для `estimateHours`;
 - від'ємний `priority`;
 - коректний граничний випадок:
   - `estimateHours = 0`;
@@ -293,7 +295,7 @@ Setter-методи не використовуються, оскільки ст
 
 Результат:
 
-    Tests run: 21, Failures: 0, Errors: 0, Skipped: 0
+    Tests run: 22, Failures: 0, Errors: 0, Skipped: 0
     BUILD SUCCESS
 
 ---
@@ -310,7 +312,7 @@ Setter-методи не використовуються, оскільки ст
 
 Результат:
 
-    Tests run: 21, Failures: 0, Errors: 0, Skipped: 0
+    Tests run: 22, Failures: 0, Errors: 0, Skipped: 0
     BugInstance size is 0
     Error size is 0
     No errors/warnings found
@@ -369,7 +371,7 @@ JAR було успішно запущено командою:
 
 GitHub Actions з лабораторної роботи №1 збережено.
 
-Після створення Pull Request для лабораторної роботи №2 необхідно перевірити:
+У фінальному Pull Request для лабораторної роботи №2 було перевірено:
 
 - старі та нові тести;
 - `verify`;
@@ -379,7 +381,7 @@ GitHub Actions з лабораторної роботи №1 збережено.
 
 Фінальний CI-запуск:
 
-https://github.com/innasarhan/kzp-project-task-manager-sarhan/actions/runs/35654904239
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/actions/runs/36149862351
 
 Статус: `Success`.
 
@@ -406,7 +408,7 @@ JAR-артефакти доступні у фінальному CI-запуск�
 | #8 | `[ЛР2] Створити клас ProjectTask` | Створено сутність `ProjectTask` з `private final` полями, getters і `toString()`. | `ProjectTaskTest`, `mvnw test`, `verify` |
 | #9 | `[ЛР2] Реалізувати валідацію ProjectTask` | Перевірку `null`, порожніх і від'ємних значень перенесено в конструктор; CSV-розбір виконується через `fromCsv`. | `ProjectTaskTest`, `ProjectTaskFromCsvTest` |
 | #10 | `[ЛР2] Додати record EstimatePriority` | Створено `record EstimatePriority` для пари `estimateHours` і `priority`. | `EstimatePriorityTest` |
-| #11 | `[ЛР2] Додати тести для ProjectTask та EstimatePriority` | Додано позитивні, граничні й негативні тести; збережено попередні тести. | 21 тест, `./mvnw -B test` |
+| #11 | `[ЛР2] Додати тести для ProjectTask та EstimatePriority` | Додано позитивні, граничні й негативні тести; збережено попередні тести. | 22 тести, `./mvnw -B test` |
 | #12 | `[ЛР2] Оновити README та REPORT` | Оновлено документацію, опис рефакторингу, результати перевірок і GitHub-процес. | README, REPORT, PR #14 |
 
 Робота виконувалась в окремій гілці `java/lab02`.
@@ -504,7 +506,7 @@ ChatGPT використовувався для консультацій щод�
 
 Фінальна локальна перевірка показала:
 
-    Tests run: 21, Failures: 0, Errors: 0, Skipped: 0
+    Tests run: 22, Failures: 0, Errors: 0, Skipped: 0
     BugInstance size is 0
     Error size is 0
     No errors/warnings found
@@ -641,7 +643,7 @@ AAA — це Arrange, Act, Assert: підготувати дані та стан
 8. Оновлено `Main`.
 9. Збережено попередні тести.
 10. Додано нові тести для конструктора, `fromCsv` та `record`.
-11. Загальна кількість успішних автоматичних тестів становить 21.
+11. Загальна кількість успішних автоматичних тестів становить 22.
 12. SpotBugs не виявив помилок.
 13. Створено виконуваний JAR.
 14. Перевірено запуск JAR.
@@ -665,15 +667,15 @@ https://github.com/innasarhan/kzp-project-task-manager-sarhan
 
 **Фінальний Git-тег:**
 
-    v1
+    v2.0.0
 
 Посилання на тег:
 
-https://github.com/innasarhan/kzp-project-task-manager-sarhan/tree/v1
+https://github.com/innasarhan/kzp-project-task-manager-sarhan/tree/v2.0.0
 
 **Кількість тестів:**
 
-    21
+    22
 
 **Помилки тестування:**
 
@@ -705,6 +707,6 @@ https://github.com/innasarhan/kzp-project-task-manager-sarhan/tree/v1
 
 У процесі роботи збережено попередні тести та додано нові тести для конструктора, фабричного методу і `record`.
 
-Фінальна локальна перевірка показала 21 успішний тест без помилок, успішне виконання Maven `verify` та відсутність помилок SpotBugs.
+Фінальна локальна перевірка показала 22 успішні тести без помилок, успішне виконання Maven `verify` та відсутність помилок SpotBugs.
 
 Результати роботи програми після рефакторингу відповідають контрольним результатам лабораторної роботи №1, тому основна зовнішня поведінка програми збережена.
