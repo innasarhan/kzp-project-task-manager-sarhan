@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Main {
 
-    private static final String VERSION = "0.1.0";
+    private static final String VERSION = "2.0.0";
 
     /**
      * Запускає програму та обробляє аргументи командного рядка.

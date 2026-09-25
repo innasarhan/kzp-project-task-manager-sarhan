@@ -36,5 +36,5 @@ jobs:
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: lab01-jar-${{ matrix.os }}
-          path: target/maven-actions-hello-0.1.0.jar
+          name: lab02-jar-${{ matrix.os }}
+          path: target/maven-actions-hello-2.0.0.jar

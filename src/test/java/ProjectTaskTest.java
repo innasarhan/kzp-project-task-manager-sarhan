@@ -105,17 +105,32 @@ public class ProjectTaskTest {
                 )
         );
     }
-@Test
-void shouldAcceptZeroEstimateAndPriority() {
-    ProjectTask task = new ProjectTask(
-            "Підготовка",
-            "Іван",
-            0.0,
-            0,
-            false
-    );
 
-    assertEquals(0.0, task.getEstimateHours());
-    assertEquals(0, task.getPriority());
-}
+    @Test
+    void shouldAcceptZeroEstimateAndPriority() {
+        ProjectTask task = new ProjectTask(
+                "Підготовка",
+                "Іван",
+                0.0,
+                0,
+                false
+        );
+
+        assertEquals(0.0, task.getEstimateHours());
+        assertEquals(0, task.getPriority());
+    }
+
+    @Test
+    void shouldRejectNaNEstimate() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new ProjectTask(
+                        "Розробити API",
+                        "Іван",
+                        Double.NaN,
+                        1,
+                        true
+                )
+        );
+    }
 }

@@ -25,7 +25,8 @@ public final class ProjectTask {
      * @param done ознака виконання задачі
      * @throws NullPointerException якщо title або assignee дорівнює null
      * @throws IllegalArgumentException якщо title або assignee порожні,
-     *                                  estimateHours або priority від'ємні
+     *                                  estimateHours не є скінченним
+     *                                  невід'ємним числом або priority від'ємний
      */
     public ProjectTask(
             String title,
@@ -56,9 +57,9 @@ public final class ProjectTask {
             );
         }
 
-        if (estimateHours < 0) {
+        if (!Double.isFinite(estimateHours) || estimateHours < 0) {
             throw new IllegalArgumentException(
-                    "оцінка годин не може бути від'ємною"
+                    "оцінка годин має бути невід'ємним скінченним числом"
             );
         }
 
