@@ -122,19 +122,19 @@ java -cp target/classes Main --version
 програму можна запустити командою:
 
 ```bash
-java -jar target/maven-actions-hello-0.1.0.jar --input data/input.csv
+java -jar target/maven-actions-hello-1.0.0.jar --input data/input.csv
 ```
 
 Довідка:
 
 ```bash
-java -jar target/maven-actions-hello-0.1.0.jar --help
+java -jar target/maven-actions-hello-1.0.0.jar --help
 ```
 
 Версія:
 
 ```bash
-java -jar target/maven-actions-hello-0.1.0.jar --version
+java -jar target/maven-actions-hello-1.0.0.jar --version
 ```
 
 ## Тестування
@@ -258,5 +258,5 @@ data/input.csv
 Поточна версія програми:
 
 ```text
-0.1.0
+1.0.0
 ```
