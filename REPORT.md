@@ -256,19 +256,19 @@ BUILD SUCCESS
 Фактичний JAR:
 
 ```text
-target/maven-actions-hello-0.1.0.jar
+target/maven-actions-hello-1.0.0.jar
 ```
 
 Перевірено запуск:
 
 ```bash
-java -jar target/maven-actions-hello-0.1.0.jar --version
+java -jar target/maven-actions-hello-1.0.0.jar --version
 ```
 
 Результат:
 
 ```text
-0.1.0
+1.0.0
 ```
 
 ## 6. GitHub Issues і Pull Request
