@@ -212,19 +212,19 @@ java -cp target/classes Main --version
 JAR знаходиться у:
 
 ```text
-target/maven-actions-hello-0.1.0.jar
+target/maven-actions-hello-2.0.0.jar
 ```
 
 Запуск:
 
 ```bash
-java -jar target/maven-actions-hello-0.1.0.jar
+java -jar target/maven-actions-hello-2.0.0.jar
 ```
 
 Приклад запуску з CSV:
 
 ```bash
-java -jar target/maven-actions-hello-0.1.0.jar --input data/input.csv
+java -jar target/maven-actions-hello-2.0.0.jar --input data/input.csv
 ```
 
 ## Тестування та статичний аналіз
