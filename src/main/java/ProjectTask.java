@@ -9,7 +9,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * проєктних задач. Конкретні підтипи можуть перевизначати
  * поліморфну оцінку пріоритету.</p>
  */
-public class ProjectTask {
+public abstract class ProjectTask {
 
     private final String title;
     private final String assignee;
@@ -133,7 +133,7 @@ public class ProjectTask {
 
         boolean done = Boolean.parseBoolean(doneText);
 
-        return new ProjectTask(
+        return new DefaultProjectTask(
                 title,
                 assignee,
                 estimateHours,
@@ -190,23 +190,16 @@ public class ProjectTask {
     /**
      * Повертає тип задачі.
      *
-     * <p>Для базового ProjectTask повертається DEVELOPMENT.
-     * Конкретні підтипи перевизначають цей метод.</p>
-     *
      * @return тип задачі
      */
-    public TaskKind getKind() {
-        return TaskKind.DEVELOPMENT;
-    }
+    public abstract TaskKind getKind();
 
     /**
      * Поліморфно оцінює пріоритет задачі.
      *
      * @return оцінений пріоритет
      */
-    public int evaluatePriority() {
-        return priority;
-    }
+    public abstract int evaluatePriority();
 
     /**
      * Перевіряє рівність задач.

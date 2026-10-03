@@ -53,7 +53,7 @@ public class ProjectTaskPolymorphismTest {
 
     @Test
     void baseProjectTaskShouldKeepOriginalPriorityBehavior() {
-        ProjectTask task = new ProjectTask(
+        ProjectTask task = new DefaultProjectTask(
                 "Загальна задача",
                 "Олена",
                 8.0,

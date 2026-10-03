@@ -9,21 +9,21 @@ public class TaskMetricsTest {
     @Test
     void shouldCalculateMetrics() {
         List<ProjectTask> tasks = List.of(
-                new ProjectTask(
+                new DefaultProjectTask(
                         "Розробити API",
                         "Іван",
                         12.5,
                         1,
                         true
                 ),
-                new ProjectTask(
+                new DefaultProjectTask(
                         "Створити дизайн",
                         "Олена",
                         8.0,
                         2,
                         false
                 ),
-                new ProjectTask(
+                new DefaultProjectTask(
                         "Написати тести",
                         "Андрій",
                         5.5,

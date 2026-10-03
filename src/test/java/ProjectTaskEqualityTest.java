@@ -10,7 +10,7 @@ public class ProjectTaskEqualityTest {
 
     @Test
     void shouldBeEqualForSameBaseTasks() {
-        ProjectTask first = new ProjectTask(
+        ProjectTask first = new DefaultProjectTask(
                 "Розробити API",
                 "Іван",
                 12.5,
@@ -18,7 +18,7 @@ public class ProjectTaskEqualityTest {
                 true
         );
 
-        ProjectTask second = new ProjectTask(
+        ProjectTask second = new DefaultProjectTask(
                 "Розробити API",
                 "Іван",
                 12.5,
@@ -34,7 +34,7 @@ public class ProjectTaskEqualityTest {
     void shouldWorkCorrectlyInHashSet() {
         Set<ProjectTask> tasks = new HashSet<>();
 
-        tasks.add(new ProjectTask(
+        tasks.add(new DefaultProjectTask(
                 "Розробити API",
                 "Іван",
                 12.5,
@@ -42,7 +42,7 @@ public class ProjectTaskEqualityTest {
                 true
         ));
 
-        tasks.add(new ProjectTask(
+        tasks.add(new DefaultProjectTask(
                 "Розробити API",
                 "Іван",
                 12.5,

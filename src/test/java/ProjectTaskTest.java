@@ -7,7 +7,7 @@ public class ProjectTaskTest {
 
     @Test
     void shouldCreateValidProjectTask() {
-        ProjectTask task = new ProjectTask(
+        ProjectTask task = new DefaultProjectTask(
                 "Розробити API",
                 "Іван",
                 12.5,
@@ -26,7 +26,7 @@ public class ProjectTaskTest {
     void shouldRejectNullTitle() {
         assertThrows(
                 NullPointerException.class,
-                () -> new ProjectTask(
+                () -> new DefaultProjectTask(
                         null,
                         "Іван",
                         10.0,
@@ -40,7 +40,7 @@ public class ProjectTaskTest {
     void shouldRejectBlankTitle() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ProjectTask(
+                () -> new DefaultProjectTask(
                         "   ",
                         "Іван",
                         10.0,
@@ -54,7 +54,7 @@ public class ProjectTaskTest {
     void shouldRejectNullAssignee() {
         assertThrows(
                 NullPointerException.class,
-                () -> new ProjectTask(
+                () -> new DefaultProjectTask(
                         "Розробити API",
                         null,
                         10.0,
@@ -68,7 +68,7 @@ public class ProjectTaskTest {
     void shouldRejectBlankAssignee() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ProjectTask(
+                () -> new DefaultProjectTask(
                         "Розробити API",
                         "   ",
                         10.0,
@@ -82,7 +82,7 @@ public class ProjectTaskTest {
     void shouldRejectNegativeEstimate() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ProjectTask(
+                () -> new DefaultProjectTask(
                         "Розробити API",
                         "Іван",
                         -1.0,
@@ -96,7 +96,7 @@ public class ProjectTaskTest {
     void shouldRejectNegativePriority() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ProjectTask(
+                () -> new DefaultProjectTask(
                         "Розробити API",
                         "Іван",
                         10.0,
@@ -108,7 +108,7 @@ public class ProjectTaskTest {
 
     @Test
     void shouldAcceptZeroEstimateAndPriority() {
-        ProjectTask task = new ProjectTask(
+        ProjectTask task = new DefaultProjectTask(
                 "Підготовка",
                 "Іван",
                 0.0,
@@ -124,7 +124,7 @@ public class ProjectTaskTest {
     void shouldRejectNaNEstimate() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ProjectTask(
+                () -> new DefaultProjectTask(
                         "Розробити API",
                         "Іван",
                         Double.NaN,
