@@ -1,13 +1,15 @@
 import java.util.Locale;
 import java.util.Objects;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Представляє одну задачу проєкту.
  *
- * <p>Об'єкт має незмінний стан після створення.
- * Усі основні інваріанти перевіряються під час створення.</p>
+ * <p>Клас містить спільні дані та інваріанти для всіх типів
+ * проєктних задач. Конкретні підтипи можуть перевизначати
+ * поліморфну оцінку пріоритету.</p>
  */
-public final class ProjectTask {
+public class ProjectTask {
 
     private final String title;
     private final String assignee;
@@ -23,11 +25,13 @@ public final class ProjectTask {
      * @param estimateHours оцінка тривалості в годинах
      * @param priority пріоритет задачі
      * @param done ознака виконання задачі
-     * @throws NullPointerException якщо title або assignee дорівнює null
-     * @throws IllegalArgumentException якщо title або assignee порожні,
-     *                                  estimateHours не є скінченним
-     *                                  невід'ємним числом або priority від'ємний
+     * @throws NullPointerException якщо title або assignee null
+     * @throws IllegalArgumentException якщо порушено інваріанти
      */
+    @SuppressFBWarnings(
+            value = "CT_CONSTRUCTOR_THROW",
+            justification = "Конструктор виконує валідацію вхідних даних згідно з інваріантами доменної моделі."
+    )
     public ProjectTask(
             String title,
             String assignee,
@@ -35,15 +39,8 @@ public final class ProjectTask {
             int priority,
             boolean done) {
 
-        this.title = Objects.requireNonNull(
-                title,
-                "title не може бути null"
-        );
-
-        this.assignee = Objects.requireNonNull(
-                assignee,
-                "assignee не може бути null"
-        );
+        Objects.requireNonNull(title, "title не може бути null");
+        Objects.requireNonNull(assignee, "assignee не може бути null");
 
         if (title.isBlank()) {
             throw new IllegalArgumentException(
@@ -69,6 +66,8 @@ public final class ProjectTask {
             );
         }
 
+        this.title = title;
+        this.assignee = assignee;
         this.estimateHours = estimateHours;
         this.priority = priority;
         this.done = done;
@@ -77,15 +76,11 @@ public final class ProjectTask {
     /**
      * Створює ProjectTask із CSV-рядка.
      *
-     * <p>Формат:
+     * <p>Формат залишається сумісним із попередніми лабораторними:
      * title;assignee;estimateHours;priority;done</p>
      *
      * @param csvLine один CSV-рядок
      * @return створена задача
-     * @throws NullPointerException якщо csvLine дорівнює null
-     * @throws IllegalArgumentException якщо кількість полів неправильна
-     *                                  або числове/boolean поле має
-     *                                  неправильний формат
      */
     public static ProjectTask fromCsv(String csvLine) {
         Objects.requireNonNull(
@@ -159,14 +154,14 @@ public final class ProjectTask {
     /**
      * Повертає виконавця задачі.
      *
-     * @return ім'я виконавця
+     * @return виконавець
      */
     public String getAssignee() {
         return assignee;
     }
 
     /**
-     * Повертає оцінку тривалості задачі.
+     * Повертає оцінку тривалості.
      *
      * @return оцінка в годинах
      */
@@ -175,9 +170,9 @@ public final class ProjectTask {
     }
 
     /**
-     * Повертає пріоритет задачі.
+     * Повертає базовий пріоритет.
      *
-     * @return числове значення пріоритету
+     * @return пріоритет
      */
     public int getPriority() {
         return priority;
@@ -193,9 +188,75 @@ public final class ProjectTask {
     }
 
     /**
+     * Повертає тип задачі.
+     *
+     * <p>Для базового ProjectTask повертається DEVELOPMENT.
+     * Конкретні підтипи перевизначають цей метод.</p>
+     *
+     * @return тип задачі
+     */
+    public TaskKind getKind() {
+        return TaskKind.DEVELOPMENT;
+    }
+
+    /**
+     * Поліморфно оцінює пріоритет задачі.
+     *
+     * @return оцінений пріоритет
+     */
+    public int evaluatePriority() {
+        return priority;
+    }
+
+    /**
+     * Перевіряє рівність задач.
+     *
+     * @param other інший об'єкт
+     * @return true, якщо задачі мають однаковий тип і дані
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+
+        ProjectTask that = (ProjectTask) other;
+
+        return Double.compare(
+                estimateHours,
+                that.estimateHours
+        ) == 0
+                && priority == that.priority
+                && done == that.done
+                && title.equals(that.title)
+                && assignee.equals(that.assignee);
+    }
+
+    /**
+     * Обчислює хеш-код задачі.
+     *
+     * @return хеш-код
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getClass(),
+                title,
+                assignee,
+                estimateHours,
+                priority,
+                done
+        );
+    }
+
+    /**
      * Повертає текстове представлення задачі.
      *
-     * @return текстове представлення об'єкта
+     * @return текстове представлення
      */
     @Override
     public String toString() {

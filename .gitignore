@@ -1,3 +1,6 @@
 target/
 report.txt
 .vscode/
+
+.DS_Store
+README-lab2-backup.md
