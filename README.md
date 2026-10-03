@@ -8,16 +8,17 @@ Java-проєкт для читання, перевірки та обробки 
 **Варіант:** 22
 **Java:** 21
 **Система збірки:** Maven
+**Поточна версія:** 3.0.0
 
-У лабораторній роботі №2 доменну модель було рефакторено: замість простого класу `Task` використовується сутність `ProjectTask` з інкапсульованим незмінним станом.
+У лабораторній роботі №3 доменну модель було розширено засобами успадкування та поліморфізму. Спільні властивості та правила валідації зосереджено в `ProjectTask`, а різну поведінку реалізовано у підтипах `DevelopmentTask` та `TestingTask`.
 
 ## Формат вхідних даних
 
+Формат CSV збережено сумісним із попередніми лабораторними роботами.
+
 Один запис на рядок:
 
-```text
-title;assignee;estimateHours;priority;done
-```
+    title;assignee;estimateHours;priority;done
 
 Поля:
 
@@ -27,25 +28,15 @@ title;assignee;estimateHours;priority;done
 - `priority` — пріоритет;
 - `done` — ознака виконання (`true` або `false`).
 
-Роздільник полів:
+Роздільник полів: `;`
 
-```text
-;
-```
-
-Кодування:
-
-```text
-UTF-8
-```
+Кодування: `UTF-8`
 
 Приклад:
 
-```text
-Розробити API;Іван;12.5;1;true
-Створити дизайн;Олена;8.0;2;false
-Написати тести;Андрій;5.5;3;true
-```
+    Розробити API;Іван;12.5;1;true
+    Створити дизайн;Олена;8.0;2;false
+    Написати тести;Андрій;5.5;3;true
 
 Невалідні записи не додаються до списку задач і не впливають на статистику. Для них виводиться номер рядка та причина помилки.
 
@@ -60,20 +51,18 @@ UTF-8
 
 Для поточного `data/input.csv` результат:
 
-```text
-Кількість валідних задач: 3
-Сумарна оцінка годин: 26.00
-Середній пріоритет: 2.00
-Кількість виконаних задач: 2
-```
+    Кількість валідних задач: 3
+    Сумарна оцінка годин: 26.00
+    Середній пріоритет: 2.00
+    Кількість виконаних задач: 2
 
 ## Доменна модель
 
 ### ProjectTask
 
-`ProjectTask` є основною сутністю предметної області.
+`ProjectTask` є спільним типом для проєктних задач.
 
-Клас містить:
+Клас містить спільні поля:
 
 - `title`;
 - `assignee`;
@@ -83,65 +72,129 @@ UTF-8
 
 Поля є `private final`.
 
-Конструктор перевіряє:
+Конструктор перевіряє інваріанти:
 
 - `title` не є `null` і не є порожнім;
 - `assignee` не є `null` і не є порожнім;
-- `estimateHours >= 0`;
-- `priority >= 0`.
+- `estimateHours` є скінченним та не від'ємним;
+- `priority` не є від'ємним.
 
-Для створення задачі з CSV-рядка використовується:
+Для збереження сумісності з попереднім форматом CSV залишено:
 
-```java
-ProjectTask.fromCsv(...)
-```
+    ProjectTask.fromCsv(...)
 
-Також реалізовано `toString()` з використанням `Locale.ROOT`.
+### DevelopmentTask
 
-### EstimatePriority
+`DevelopmentTask` успадковує `ProjectTask` та перевизначає `evaluatePriority()`.
 
-Для пари значень оцінки та пріоритету використовується immutable `record`:
+Для задачі розробки оцінка пріоритету додатково збільшується на 1, якщо оцінка тривалості становить щонайменше 10 годин.
 
-```java
-EstimatePriority(double estimateHours, int priority)
-```
+### TestingTask
+
+`TestingTask` успадковує `ProjectTask` та має власне правило `evaluatePriority()`.
+
+Для невиконаної задачі тестування оцінка пріоритету збільшується на 1.
+
+### TaskKind
+
+Для визначення типу задачі додано enum `TaskKind`.
+
+Можливі значення:
+
+- `DEVELOPMENT`;
+- `TESTING`.
+
+Підтипи повертають відповідне значення через `getKind()`.
+
+## Поліморфізм
+
+Об'єкти різних підтипів обробляються через спільний тип:
+
+    List<ProjectTask>
+
+Наприклад:
+
+    List<ProjectTask> tasks = List.of(
+        new DevelopmentTask("Розробити API", "Іван", 12.5, 1, true),
+        new TestingTask("Написати тести", "Андрій", 5.5, 3, false)
+    );
+
+Оцінка пріоритету виконується через:
+
+    task.evaluatePriority()
+
+без `if` або `switch` для визначення конкретного підтипу.
+
+`TaskMetrics.averagePriority()` також працює через поліморфний `evaluatePriority()`, тому логіка конкретного типу не дублюється в класі метрик.
+
+Такий підхід дозволяє додавати нові підтипи задач без переписування коду, який працює зі спільним типом `ProjectTask`.
+
+## equals() та hashCode()
+
+Для `ProjectTask` реалізовано:
+
+- `equals()`;
+- `hashCode()`.
+
+Рівність враховує значення полів та конкретний клас об'єкта.
+
+Це забезпечує узгоджену поведінку під час використання:
+
+    HashSet<ProjectTask>
+    HashMap<ProjectTask, ...>
+
+Тести перевіряють:
+
+- рівність однакових задач;
+- однаковий `hashCode()` для рівних об'єктів;
+- відсутність дублювання в `HashSet`;
+- відмінність задач різних підтипів.
+
+## Успадкування та композиція
+
+Успадкування використано для `DevelopmentTask` і `TestingTask`, оскільки обидва типи є різновидами `ProjectTask`, мають спільний стан та інваріанти, але реалізують різну поведінку `evaluatePriority()`.
+
+Композиція для цієї частини моделі не використовується як основний механізм, оскільки окремі правила пріоритету є поведінкою конкретних різновидів задач.
 
 ## Структура проєкту
 
-```text
-.
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── data/
-│   └── input.csv
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       ├── EstimatePriority.java
-│   │       ├── HelloWorld.java
-│   │       ├── Main.java
-│   │       ├── ProjectTask.java
-│   │       ├── ReportFormatter.java
-│   │       ├── Task.java
-│   │       ├── TaskMetrics.java
-│   │       └── TaskParser.java
-│   └── test/
-│       └── java/
-│           ├── EstimatePriorityTest.java
-│           ├── ProjectTaskFromCsvTest.java
-│           ├── ProjectTaskTest.java
-│           ├── TaskMetricsTest.java
-│           └── TaskParserTest.java
-├── .gitignore
-├── pom.xml
-├── README.md
-├── REPORT.md
-├── mvnw
-└── mvnw.cmd
-```
+    .
+    ├── .github/
+    │   └── workflows/
+    │       └── ci.yml
+    ├── data/
+    │   └── input.csv
+    ├── src/
+    │   ├── main/
+    │   │   └── java/
+    │   │       ├── DevelopmentTask.java
+    │   │       ├── EstimatePriority.java
+    │   │       ├── HelloWorld.java
+    │   │       ├── Main.java
+    │   │       ├── ProjectTask.java
+    │   │       ├── ReportFormatter.java
+    │   │       ├── Task.java
+    │   │       ├── TaskKind.java
+    │   │       ├── TaskMetrics.java
+    │   │       ├── TaskParser.java
+    │   │       └── TestingTask.java
+    │   └── test/
+    │       └── java/
+    │           ├── EstimatePriorityTest.java
+    │           ├── ProjectTaskEqualityTest.java
+    │           ├── ProjectTaskFromCsvTest.java
+    │           ├── ProjectTaskPolymorphismTest.java
+    │           ├── ProjectTaskTest.java
+    │           ├── TaskMetricsTest.java
+    │           └── TaskParserTest.java
+    ├── .gitignore
+    ├── pom.xml
+    ├── README.md
+    ├── REPORT.md
+    ├── mvnw
+    └── mvnw.cmd
 
-Старий `Task.java` збережено як код попередньої лабораторної роботи. Поточна робоча логіка використовує `ProjectTask`.
+Старий `Task.java` збережено як код попередньої лабораторної роботи. Поточна робоча логіка використовує `ProjectTask` та його підтипи.
 
 ## Запуск
 
@@ -149,91 +202,67 @@ EstimatePriority(double estimateHours, int priority)
 
 macOS/Linux:
 
-```bash
-./mvnw -B clean verify
-```
+    ./mvnw -B clean verify
 
 Windows:
 
-```cmd
-mvnw.cmd -B clean verify
-```
+    mvnw.cmd -B clean verify
 
 ### JUnit-тести
 
-```bash
-./mvnw -B test
-```
+    ./mvnw -B test
 
 Поточна кількість автоматичних тестів:
 
-```text
-21
-```
+    28
 
 ### Запуск програми
 
-```bash
-java -cp target/classes Main
-```
+    java -cp target/classes Main
 
 ### Запуск із власним CSV
 
-```bash
-java -cp target/classes Main --input data/input.csv
-```
+    java -cp target/classes Main --input data/input.csv
 
 ### Запис звіту у файл
 
-```bash
-java -cp target/classes Main --input data/input.csv --output report.txt
-```
+    java -cp target/classes Main --input data/input.csv --output report.txt
 
 ### Довідка
 
-```bash
-java -cp target/classes Main --help
-```
+    java -cp target/classes Main --help
 
 ### Версія
 
-```bash
-java -cp target/classes Main --version
-```
+    java -cp target/classes Main --version
+
+Очікувана версія:
+
+    3.0.0
 
 ## Виконуваний JAR
 
 Після виконання:
 
-```bash
-./mvnw -B clean package
-```
+    ./mvnw -B clean package
 
 JAR знаходиться у:
 
-```text
-target/maven-actions-hello-2.0.0.jar
-```
+    target/maven-actions-hello-3.0.0.jar
 
 Запуск:
 
-```bash
-java -jar target/maven-actions-hello-2.0.0.jar
-```
+    java -jar target/maven-actions-hello-3.0.0.jar
 
 Приклад запуску з CSV:
 
-```bash
-java -jar target/maven-actions-hello-2.0.0.jar --input data/input.csv
-```
+    java -jar target/maven-actions-hello-3.0.0.jar --input data/input.csv
 
 ## Тестування та статичний аналіз
 
 Повна перевірка:
 
-```bash
-./mvnw -B clean verify
-```
+    ./mvnw -B clean verify
 
 Під час `verify` виконуються:
 
@@ -242,21 +271,25 @@ java -jar target/maven-actions-hello-2.0.0.jar --input data/input.csv
 - SpotBugs;
 - створення JAR.
 
-Поточний результат локальної перевірки:
+Поточний результат тестування:
 
-```text
-Tests run: 21, Failures: 0, Errors: 0, Skipped: 0
-BugInstance size is 0
-Error size is 0
-No errors/warnings found
-BUILD SUCCESS
-```
+    Tests run: 28, Failures: 0, Errors: 0, Skipped: 0
+    BUILD SUCCESS
+
+Окремі тести перевіряють:
+
+- базовий тип `ProjectTask`;
+- `DevelopmentTask`;
+- `TestingTask`;
+- `TaskKind`;
+- поліморфний `evaluatePriority()`;
+- `equals()` та `hashCode()`;
+- роботу `HashSet`;
+- сумісність старих тестів та CSV-формату.
 
 ## GitHub Actions
 
-CI успадковано з лабораторної роботи №1.
-
-Workflow перевіряє проєкт на:
+CI перевіряє проєкт на:
 
 - Ubuntu;
 - Windows;
@@ -264,34 +297,44 @@ Workflow перевіряє проєкт на:
 
 Для запуску використовується Java 21 та Maven Wrapper.
 
+Workflow також зберігає створений JAR як artifact:
+
+    target/maven-actions-hello-3.0.0.jar
+
 ## GitHub
 
 Репозиторій:
 
 https://github.com/innasarhan/kzp-project-task-manager-sarhan
 
-Поточна гілка лабораторної роботи №2:
+Поточна гілка лабораторної роботи №3:
 
-```text
-java/lab02
-```
+    java/lab03
 
-Для роботи створено Issues:
+Для лабораторної роботи №3 створено Issues:
 
-```text
-#8  [ЛР2] Створити клас ProjectTask
-#9  [ЛР2] Реалізувати валідацію ProjectTask
-#10 [ЛР2] Додати record EstimatePriority
-#11 [ЛР2] Додати тести для ProjectTask та EstimatePriority
-#12 [ЛР2] Оновити README та REPORT
-```
+    #16 [ЛР3] Розширити модель ProjectTask та додати поліморфізм
+    #17 [ЛР3] Додати TaskKind та equals/hashCode
+    #18 [ЛР3] Додати тести та оновити документацію
+
+Попередні Issues лабораторної роботи №2 збережено в історії репозиторію.
+
+## Версіювання
+
+Для лабораторної роботи №3 використовується версія:
+
+    3.0.0
+
+Фінальний Git-тег:
+
+    v3.0.0
 
 ## Документація
 
-Детальний опис виконання лабораторної роботи №2, стану до та після рефакторингу, тестування та результатів перевірки наведено у `REPORT.md`.
+Детальний опис виконання лабораторної роботи №3, змін доменної моделі, поліморфізму, enum, `equals/hashCode`, тестування та порівняння з попередньою реалізацією наведено у `REPORT.md`.
 
 ## Академічна доброчесність
 
 Під час виконання роботи використовувалися GitHub Copilot та ChatGPT як допоміжні інструменти для консультацій, роботи з кодом, тестами та документацією.
 
-Усі прийняті зміни перевірялися локально за допомогою Maven та JUnit.
+Усі прийняті зміни перевіряються локально за допомогою Maven та JUnit.

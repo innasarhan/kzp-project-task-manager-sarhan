@@ -37,7 +37,7 @@ public class TaskMetrics {
         int total = 0;
 
         for (ProjectTask task : tasks) {
-            total += task.getPriority();
+            total += task.evaluatePriority();
         }
 
         return (double) total / tasks.size();
