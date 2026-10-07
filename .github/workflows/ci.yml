@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main, lab01 ]
+    branches: [ main, java/lab04 ]
   pull_request:
     branches: [ main ]
 
@@ -36,5 +36,5 @@ jobs:
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: lab02-jar-${{ matrix.os }}
-          path: target/maven-actions-hello-3.0.0.jar
+          name: lab04-jar-${{ matrix.os }}
+          path: target/maven-actions-hello-4.0.0.jar
