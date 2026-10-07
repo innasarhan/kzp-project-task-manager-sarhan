@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Main {
 
-    private static final String VERSION = "3.0.0";
+    private static final String VERSION = "4.0.0";
 
     /**
      * Запускає програму та обробляє аргументи командного рядка.
@@ -51,7 +51,7 @@ public class Main {
         }
 
         TaskParser parser = new TaskParser();
-        TaskMetrics metrics = new TaskMetrics();
+        StreamTaskMetrics metrics = new StreamTaskMetrics();
         ReportFormatter formatter = new ReportFormatter();
 
         List<ProjectTask> tasks = parser.readTasks(inputPath);
@@ -60,7 +60,7 @@ public class Main {
                 tasks.size(),
                 metrics.totalEstimateHours(tasks),
                 metrics.averagePriority(tasks),
-                metrics.countCompletedTasks(tasks)
+                (int) metrics.countCompletedTasks(tasks)
         );
 
         System.out.print(report);
@@ -88,7 +88,9 @@ public class Main {
 
     private static void printHelp() {
         System.out.println("Використання:");
-        System.out.println("  java -jar lab01.jar [--input FILE] [--output FILE]");
+        System.out.println(
+                "  java -jar lab01.jar [--input FILE] [--output FILE]"
+        );
         System.out.println();
         System.out.println("Опції:");
         System.out.println("  --help              показати довідку");
