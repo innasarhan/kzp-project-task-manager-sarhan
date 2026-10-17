@@ -61,13 +61,17 @@ class CsvRepositoryTest {
     void csvExportAndImportPreserveRecords() {
         Path file = tempDir.resolve("tasks.csv");
 
-        List<ProjectTaskRecord> original = List.of(
-                task("API, v2", "Olena", 4.5,
-                        TaskStatus.IN_PROGRESS, TaskPriority.HIGH),
-                task("Fix \"login\"", "Ivan", 2.0,
-                        TaskStatus.TODO, TaskPriority.MEDIUM),
-                task("First line\nSecond line", "Oksana", 1.5,
-                        TaskStatus.DONE, TaskPriority.LOW));
+       List<ProjectTaskRecord> original = List.of(
+        task("API, v2", "Olena", 4.5,
+                TaskStatus.IN_PROGRESS, TaskPriority.HIGH),
+        task("Fix \"login\"", "Ivan", 2.0,
+                TaskStatus.TODO, TaskPriority.MEDIUM),
+        task("First line\nSecond line", "Oksana", 1.5,
+                TaskStatus.DONE, TaskPriority.LOW),
+        task("Database migration", "Andrii", 6.0,
+                TaskStatus.IN_PROGRESS, TaskPriority.HIGH),
+        task("Documentation", "Maria", 2.5,
+                TaskStatus.TODO, TaskPriority.MEDIUM));
 
         new CsvExporter().export(original, file);
 
