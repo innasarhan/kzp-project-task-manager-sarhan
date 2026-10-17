@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main, java/lab04 ]
+    branches: [ main, lab05 ]
   pull_request:
     branches: [ main ]
 
@@ -36,5 +36,6 @@ jobs:
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: lab04-jar-${{ matrix.os }}
-          path: target/maven-actions-hello-4.0.0.jar
+          name: lab05-jar-${{ matrix.os }}
+          path: target/maven-actions-hello-5.0.0.jar
+          if-no-files-found: error
