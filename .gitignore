@@ -4,3 +4,14 @@ report.txt
 
 .DS_Store
 README-lab2-backup.md
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
