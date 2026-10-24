@@ -1,0 +1,9 @@
+name,assignee,hours,status,priority
+Website design,Anna,5,in_progress,high
+API development,Oleh,8,in_progress,high
+Database setup,Anna,3,done,medium
+Write documentation,Ivan,4,todo,low
+Fix login bug,Oleh,2,todo,high
+Testing,Ivan,6,done,medium
+Deploy application,Anna,4,todo,high
+API tests,Oleh,3,in_progress,medium
