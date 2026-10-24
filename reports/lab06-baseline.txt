@@ -1,0 +1,21 @@
+PROJECT TASKS REPORT
+====================
+Total active tasks: 6
+Total hours: 26
+
+HOURS BY ASSIGNEE
+-----------------
+Anna: 9 hours
+Ivan: 4 hours
+Oleh: 13 hours
+
+UNIQUE ASSIGNEES
+----------------
+Anna, Ivan, Oleh
+
+HIGH PRIORITY TASKS
+-------------------
+- Website design | Anna | 5 hours | in_progress
+- API development | Oleh | 8 hours | in_progress
+- Fix login bug | Oleh | 2 hours | todo
+- Deploy application | Anna | 4 hours | todo

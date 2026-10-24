@@ -4,6 +4,7 @@ import pytest
 
 from project_tasks.errors import DataError
 from project_tasks.loader import load_tasks
+from project_tasks.models import DevelopmentTask, ProjectTask, TestingTask
 
 
 def test_load_tasks_reads_valid_csv(tmp_path: Path) -> None:
@@ -15,15 +16,28 @@ def test_load_tasks_reads_valid_csv(tmp_path: Path) -> None:
 
     tasks = load_tasks(csv_file)
 
-    assert tasks == [
-        {
-            "name": "Website design",
-            "assignee": "Anna",
-            "hours": 5,
-            "status": "in_progress",
-            "priority": "high",
-        }
-    ]
+    assert len(tasks) == 1
+    assert isinstance(tasks[0], ProjectTask)
+    assert isinstance(tasks[0], DevelopmentTask)
+    assert tasks[0].name == "Website design"
+    assert tasks[0].assignee == "Anna"
+    assert tasks[0].hours == 5
+    assert tasks[0].status == "in_progress"
+    assert tasks[0].priority == "high"
+
+
+def test_load_tasks_identifies_testing_task(tmp_path: Path) -> None:
+    csv_file = tmp_path / "tasks.csv"
+    csv_file.write_text(
+        "name,assignee,hours,status,priority\nAPI tests,Anna,3,todo,medium\n",
+        encoding="utf-8",
+    )
+
+    tasks = load_tasks(csv_file)
+
+    assert len(tasks) == 1
+    assert isinstance(tasks[0], TestingTask)
+    assert tasks[0].name == "API tests"
 
 
 def test_load_tasks_rejects_invalid_hours(tmp_path: Path) -> None:

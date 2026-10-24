@@ -2,13 +2,14 @@ import csv
 from pathlib import Path
 
 from project_tasks.errors import DataError
+from project_tasks.models import DevelopmentTask, ProjectTask, TestingTask
 
 
 REQUIRED_COLUMNS = {"name", "assignee", "hours", "status", "priority"}
 
 
-def load_tasks(path: str | Path) -> list[dict[str, str | int]]:
-    """Load tasks from CSV and validate fields with row-specific errors."""
+def load_tasks(path: str | Path) -> list[ProjectTask]:
+    """Load CSV rows as validated task objects with row-specific errors."""
     csv_path = Path(path)
 
     try:
@@ -22,7 +23,7 @@ def load_tasks(path: str | Path) -> list[dict[str, str | int]]:
             if missing_columns:
                 raise DataError(f"Missing required columns: {', '.join(sorted(missing_columns))}")
 
-            tasks: list[dict[str, str | int]] = []
+            tasks: list[ProjectTask] = []
 
             for row_number, row in enumerate(reader, start=2):
                 if None in row:
@@ -34,9 +35,9 @@ def load_tasks(path: str | Path) -> list[dict[str, str | int]]:
 
                 name = row["name"].strip()
                 assignee = row["assignee"].strip()
+                raw_hours = row["hours"].strip()
                 status = row["status"].strip().lower()
                 priority = row["priority"].strip().lower()
-                raw_hours = row["hours"].strip()
 
                 fields = {
                     "name": name,
@@ -51,7 +52,7 @@ def load_tasks(path: str | Path) -> list[dict[str, str | int]]:
 
                 try:
                     hours = int(raw_hours)
-                except (ValueError, AttributeError) as error:
+                except ValueError as error:
                     raise DataError(
                         f"Invalid value in row {row_number}, "
                         f"field 'hours': {raw_hours!r} is not an integer."
@@ -63,15 +64,23 @@ def load_tasks(path: str | Path) -> list[dict[str, str | int]]:
                         f"field 'hours': {hours} cannot be negative."
                     )
 
-                tasks.append(
-                    {
-                        "name": name,
-                        "assignee": assignee,
-                        "hours": hours,
-                        "status": status,
-                        "priority": priority,
-                    }
-                )
+                try:
+                    if "test" in name.casefold():
+                        task_type = TestingTask
+                    else:
+                        task_type = DevelopmentTask
+
+                    task = task_type(
+                        name=name,
+                        assignee=assignee,
+                        hours=hours,
+                        status=status,
+                        priority=priority,
+                    )
+                except ValueError as error:
+                    raise DataError(f"Invalid task in CSV row {row_number}: {error}") from error
+
+                tasks.append(task)
 
     except OSError as error:
         raise DataError(f"Cannot read CSV file: {csv_path}") from error

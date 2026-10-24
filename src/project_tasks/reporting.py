@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Any
 
+from project_tasks.models import ProjectTask
+
 
 def write_report(
     analysis: dict[str, Any],
@@ -32,13 +34,11 @@ def write_report(
         ]
     )
 
-    high_priority_tasks = analysis["high_priority_tasks"]
+    high_priority_tasks: list[ProjectTask] = analysis["high_priority_tasks"]
 
     if high_priority_tasks:
         for task in high_priority_tasks:
-            lines.append(
-                f"- {task['name']} | {task['assignee']} | {task['hours']} hours | {task['status']}"
-            )
+            lines.append(f"- {task.name} | {task.assignee} | {task.hours} hours | {task.status}")
     else:
         lines.append("None")
 

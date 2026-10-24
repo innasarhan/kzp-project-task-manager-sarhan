@@ -1,32 +1,15 @@
 from pathlib import Path
 
 from project_tasks.analysis import analyze_tasks
+from project_tasks.models import DevelopmentTask, TestingTask
 from project_tasks.reporting import write_report
 
 
 def test_write_report_creates_readable_report(tmp_path: Path) -> None:
     tasks = [
-        {
-            "name": "Website design",
-            "assignee": "Anna",
-            "hours": 5,
-            "status": "in_progress",
-            "priority": "high",
-        },
-        {
-            "name": "Database setup",
-            "assignee": "Anna",
-            "hours": 3,
-            "status": "done",
-            "priority": "medium",
-        },
-        {
-            "name": "Fix login bug",
-            "assignee": "Oleh",
-            "hours": 2,
-            "status": "todo",
-            "priority": "high",
-        },
+        DevelopmentTask("Website design", "Anna", 5, "in_progress", "high"),
+        DevelopmentTask("Database setup", "Anna", 3, "done", "medium"),
+        TestingTask("Fix login bug", "Oleh", 2, "todo", "high"),
     ]
 
     analysis = analyze_tasks(tasks)
@@ -36,12 +19,14 @@ def test_write_report_creates_readable_report(tmp_path: Path) -> None:
 
     report = output_path.read_text(encoding="utf-8")
 
+    assert "PROJECT TASKS REPORT" in report
     assert "Total active tasks: 2" in report
     assert "Total hours: 7" in report
     assert "Anna: 5 hours" in report
     assert "Oleh: 2 hours" in report
-    assert "Website design" in report
-    assert "Fix login bug" in report
+    assert "Anna, Oleh" in report
+    assert "- Website design | Anna | 5 hours | in_progress" in report
+    assert "- Fix login bug | Oleh | 2 hours | todo" in report
     assert "Database setup" not in report
 
 
@@ -55,4 +40,6 @@ def test_write_report_handles_empty_analysis(tmp_path: Path) -> None:
 
     assert "Total active tasks: 0" in report
     assert "Total hours: 0" in report
+    assert "UNIQUE ASSIGNEES" in report
     assert "None" in report
+    assert "HIGH PRIORITY TASKS" in report
